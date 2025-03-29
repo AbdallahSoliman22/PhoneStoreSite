@@ -1,0 +1,179 @@
+﻿@model IEnumerable<Product>
+
+
+<div class="row pb-3 mx-0">
+   
+    <div class="row pb-3">
+        <div class="col-6 mb-3">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search products by name..." onkeyup="filterProducts()">
+        </div>
+        <div class="col-6 mb-3">
+            <select id="categoryFilter" class="form-control" onchange="filterProducts()">
+                <option value="">All Categories</option>
+                @foreach (var category in Model.Select(p => p.Category).Distinct())
+                {
+                    <option value="@category.Name">@category.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+    @foreach (var product in Model)
+    {
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                        @if (product.ProductImages != null && product.ProductImages.Count() > 0)
+                        {
+                            <img src="@product.ProductImages.FirstOrDefault().ImageUrl" class="card-img-top rounded" />
+                        }
+                        else
+                        {
+                            <img src="https://placehold.co/500x600/png" class="card-img-top rounded" />
+                        }
+
+                        <div class="card-body pb-0">
+                            <div class="pl-1">
+                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@product.Title</p>
+                                <p class="card-title text-warning text-center">by <b>@product.Company</b></p>
+                            </div>
+                            <div class="pl-1">
+                                <p class="text-dark text-opacity-75 text-center mb-0">
+                                    <span class="text-decoration-line-through">
+                                        @product.ListPrice.ToString("c")
+                                    </span>
+                                </p>
+                            </div>
+                            <div class="pl-1">
+                                <p class="text-dark text-opacity-75 text-center">
+                                    Price:
+                                    <span>
+                                        @product.Price100.ToString("c")
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <a asp-action="Details"
+                               asp-route-productId="@product.Id"
+                               class="btn btn-primary bg-gradient border-0 form-control">
+                                Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<section class="py-5 bg-danger">
+    <div class="container">
+        <h2 class="text-center mb-5 text-white">Special Offers</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">Limited Time Deal</h5>
+                        <p class="card-text">Get 20% off on select smartphones. Hurry, offer ends soon!</p>
+                        <a href="#" class="btn btn-dark">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h2 class="display-4">About Us</h2>
+                <p class="lead">
+                    Welcome to PhoneWeb, your one-stop destination for the latest and greatest in mobile technology.
+                    We are passionate about providing high-quality smartphones and accessories at unbeatable prices.
+                    Our mission is to make cutting-edge technology accessible to everyone.
+                </p>
+                <a href="#" class="btn btn-primary btn-lg">Learn More</a>
+            </div>
+            <div class="col-lg-6">
+                <img src="https://m-cdn.phonearena.com/images/article/64576-wide-two_1200/The-Best-Phones-in-2025-Our-top-recommendations.jpg" class="img-fluid rounded" alt="About Us Image">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">What Our Customers Say</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <p class="card-text">"Amazing products and excellent customer service! Highly recommend PhoneWeb for all your tech needs."</p>
+                        <p class="text-muted">- John Doe</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <p class="card-text">"I love the variety of products available. The prices are unbeatable, and delivery is always on time."</p>
+                        <p class="text-muted">- Jane Smith</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <p class="card-text">"PhoneWeb has become my go-to store for smartphones. Their deals are fantastic!"</p>
+                        <p class="text-muted">- Mike Johnson</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Frequently Asked Questions</h2>
+        <div class="accordion" id="faqAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                        What is the return policy?
+                    </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                        We offer a 30-day return policy on all products. Conditions apply.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Contact Us</h2>
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" rows="5" placeholder="Enter your message"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
